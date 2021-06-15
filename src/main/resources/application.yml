@@ -17,3 +17,8 @@ endpoints:
   health:
     enabled: true
     details-visible: ANONYMOUS
+
+nats:
+  server1:
+    addresses:
+      - "nats://localhost:4222"

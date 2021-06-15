@@ -36,6 +36,7 @@ dependencies {
     implementation group: 'com.datastax.oss', name: 'java-driver-core', version: '4.12.0'
     implementation("io.micronaut.cassandra:micronaut-cassandra:4.0.0")
     implementation("io.micronaut:micronaut-management")
+    implementation("io.micronaut.nats:micronaut-nats")
 
 }
 
