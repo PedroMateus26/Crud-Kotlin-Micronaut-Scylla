@@ -1,12 +1,11 @@
 package com.pedromateus.controller
 
 import com.pedromateus.livro.controller.LivroController
-import com.pedromateus.livro.controller.LivroRequest
-import com.pedromateus.livro.controller.LivroResponse
+import com.pedromateus.livro.controller.dto.LivroRequest
+import com.pedromateus.livro.controller.dto.LivroResponse
 import com.pedromateus.livro.service.LivroService
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.shouldBe
-import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.test.extensions.kotest.annotation.MicronautTest
 import io.mockk.every

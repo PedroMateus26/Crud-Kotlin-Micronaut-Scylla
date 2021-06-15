@@ -1,4 +1,4 @@
-package com.pedromateus.livro.controller
+package com.pedromateus.livro.controller.dto
 
 import io.micronaut.core.annotation.Introspected
 

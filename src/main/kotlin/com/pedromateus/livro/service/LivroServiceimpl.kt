@@ -1,7 +1,7 @@
 package com.pedromateus.livro.service
 
-import com.pedromateus.livro.controller.LivroRequest
-import com.pedromateus.livro.controller.LivroResponse
+import com.pedromateus.livro.controller.dto.LivroRequest
+import com.pedromateus.livro.controller.dto.LivroResponse
 import com.pedromateus.livro.repository.LivroRepository
 import javax.inject.Singleton
 

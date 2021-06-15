@@ -1,5 +1,7 @@
 package com.pedromateus.livro.controller
 
+import com.pedromateus.livro.controller.dto.LivroRequest
+import com.pedromateus.livro.controller.dto.LivroResponse
 import com.pedromateus.livro.service.LivroService
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
