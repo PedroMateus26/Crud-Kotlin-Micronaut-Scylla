@@ -4,7 +4,7 @@ import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.Row
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder.*
 import com.pedromateus.livro.subscriber.model.LivroEvent
-import com.pedromateus.livro.subscriber.model.LivroRequest
+import com.pedromateus.livro.subscriber.model.LivroRequestDTO
 import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Singleton
@@ -14,23 +14,23 @@ class LivroRespositoryImpl(private val cqlSession: CqlSession) : LivroRepository
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    override fun salvaLivro(livro: LivroRequest) {
+    override fun salvaLivro(livroDTO: LivroRequestDTO) {
         cqlSession.execute(
             insertInto("prateleira")
                 .value("id", literal(UUID.randomUUID()))
-                .value("titulo", literal(livro.titulo))
-                .value("autor", literal(livro.autor))
+                .value("titulo", literal(livroDTO.titulo))
+                .value("autor", literal(livroDTO.autor))
                 .build()
         )
         logger.info("livro salvo")
     }
 
-    override fun atualizaLivro(livro: LivroRequest,id:UUID) {
+    override fun atualizaLivro(livroDTO: LivroRequestDTO, id:UUID) {
         val value = findById(id)
         if (value != null) {
             cqlSession.execute(update("prateleira")
-                .setColumn("titulo", literal(livro.titulo))
-                .setColumn("autor", literal(livro.autor))
+                .setColumn("titulo", literal(livroDTO.titulo))
+                .setColumn("autor", literal(livroDTO.autor))
                 .whereColumn("id")
                 .isEqualTo(literal(id))
                 .build())
@@ -61,7 +61,7 @@ class LivroRespositoryImpl(private val cqlSession: CqlSession) : LivroRepository
 
     private fun converteRowParaLivroEvent(row:Row)=LivroEvent(
         id=row.getUuid("id"),
-        LivroRequest(titulo = row.getString("titulo")!!,autor = row.getString("autor")!!)
+        LivroRequestDTO(titulo = row.getString("titulo")!!,autor = row.getString("autor")!!)
     )
 
 }
