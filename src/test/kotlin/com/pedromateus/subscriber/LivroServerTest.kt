@@ -2,6 +2,7 @@ package com.pedromateus.subscriber
 import com.pedromateus.livro.service.LivroServiceimpl
 import com.pedromateus.livro.subscriber.LivroServer
 import com.pedromateus.livro.subscriber.model.LivroRequest
+import com.pedromateus.livro.subscriber.model.TipoDeOperaçãoEnum
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.shouldBe
 import io.micronaut.test.extensions.kotest.annotation.MicronautTest
@@ -18,7 +19,7 @@ class LivroServerTest:AnnotationSpec() {
 
     @BeforeEach
     fun setUp(){
-        request= LivroRequest(titulo = "titulo",autor = "autor")
+        request= LivroRequest(titulo = "titulo",autor = "autor",TipoDeOperaçãoEnum.SAVE)
 
     }
 
