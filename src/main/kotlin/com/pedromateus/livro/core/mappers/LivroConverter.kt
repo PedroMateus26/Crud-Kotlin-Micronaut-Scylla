@@ -1,12 +1,13 @@
 package com.pedromateus.livro.core.mappers
 
-import com.pedromateus.livro.core.model.LivroEntity
-import com.pedromateus.livro.infrastructure.model.LivroRequestDTO
+import com.pedromateus.livro.core.model.Livro
+import com.pedromateus.livro.database.entity.LivroEntity
+import com.pedromateus.livro.infrastructure.model.LivroEvent
 
 class LivroConverter{
     companion object{
-        fun entityParaDtoDeSaida(livroEntity: LivroEntity)=LivroRequestDTO(livroEntity.titulo,livroEntity.autor)
-        fun dtoParaEntity(livroRequestDTO: LivroRequestDTO)=LivroEntity(livroRequestDTO.titulo,livroRequestDTO.autor)
+        fun converteLivroEventParaLivro(livroEvent: LivroEvent)= Livro(livroEvent.id,livroEvent.titulo,livroEvent.autor)
+        fun converteLivroParaLivroEntity(livro: Livro)= LivroEntity(livro.id,livro.titulo,livro.autor)
 
     }
 

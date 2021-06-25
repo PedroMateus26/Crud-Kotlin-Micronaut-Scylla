@@ -4,5 +4,6 @@ import java.util.*
 
 class LivroEvent(
     val id: UUID?,
-    val livroRequestDTO: LivroRequestDTO?
+    val titulo:String?,
+    val autor:String?
 )

@@ -1,5 +1,5 @@
 package com.pedromateus.subscriber
-import com.pedromateus.livro.core.service.LivroServiceimpl
+import com.pedromateus.livro.core.service.LivroServiceimplPort
 import com.pedromateus.livro.infrastructure.model.Events
 import com.pedromateus.livro.infrastructure.model.EventsInformation
 import com.pedromateus.livro.infrastructure.model.LivroEvent
@@ -15,7 +15,7 @@ import java.util.*
 @MicronautTest
 class LivroServerTest:AnnotationSpec() {
 
-    val service= mockk<LivroServiceimpl>()
+    val service= mockk<LivroServiceimplPort>()
     val controller= LivroServer(service)
 
     lateinit var requestDTO: LivroRequestDTO

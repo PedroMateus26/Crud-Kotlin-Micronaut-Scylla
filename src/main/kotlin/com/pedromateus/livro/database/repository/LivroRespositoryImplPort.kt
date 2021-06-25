@@ -3,16 +3,14 @@ package com.pedromateus.livro.database.repository
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.Row
 import com.datastax.oss.driver.api.querybuilder.QueryBuilder.*
-import com.pedromateus.livro.core.model.LivroEntity
-import com.pedromateus.livro.core.ports.LivroRepository
-import com.pedromateus.livro.infrastructure.model.LivroEvent
-import com.pedromateus.livro.infrastructure.model.LivroRequestDTO
+import com.pedromateus.livro.core.ports.LivroRepositoryPort
+import com.pedromateus.livro.database.entity.LivroEntity
 import org.slf4j.LoggerFactory
 import java.util.*
 import javax.inject.Singleton
 
 @Singleton
-class LivroRespositoryImpl(private val cqlSession: CqlSession) : LivroRepository {
+class LivroRespositoryImplPort(private val cqlSession: CqlSession) : LivroRepositoryPort {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -27,31 +25,31 @@ class LivroRespositoryImpl(private val cqlSession: CqlSession) : LivroRepository
         logger.info("livro salvo")
     }
 
-    override fun atualizaLivro(livroEntity: LivroEntity, id:UUID) {
-        val value = findById(id)
+    override fun atualizaLivro(livroEntity: LivroEntity) {
+        val value = findById(livroEntity.id)
         if (value != null) {
             cqlSession.execute(update("prateleira")
                 .setColumn("titulo", literal(livroEntity.titulo))
                 .setColumn("autor", literal(livroEntity.autor))
                 .whereColumn("id")
-                .isEqualTo(literal(id))
+                .isEqualTo(literal(livroEntity.id))
                 .build())
         }
     }
 
-    override fun deletaLivro(id: UUID) {
-        val teste = findById(id)
+    override fun deletaLivro(livroEntity:LivroEntity) {
+        val teste = findById(livroEntity.id)
         cqlSession.execute(
             deleteFrom("prateleira")
                 .whereColumn("id")
-                .isEqualTo(literal(id))
+                .isEqualTo(literal(livroEntity.id))
                 .ifExists()
                 .build()
         )
         logger.info("livro deletado")
     }
 
-    private fun findById(id: UUID) = converteRowParaLivroEvent(
+    private fun findById(id:UUID?) = converteRowParaLivroEvent(
         cqlSession.execute(
             selectFrom("prateleira")
                 .all()
@@ -61,9 +59,10 @@ class LivroRespositoryImpl(private val cqlSession: CqlSession) : LivroRepository
         ).one()!!
     )
 
-    private fun converteRowParaLivroEvent(row:Row)= LivroEvent(
+    private fun converteRowParaLivroEvent(row:Row)= LivroEntity(
         id=row.getUuid("id"),
-        LivroRequestDTO(titulo = row.getString("titulo")!!,autor = row.getString("autor")!!)
+        titulo = row.getString("titulo"),autor = row.getString("autor")
     )
+
 
 }
