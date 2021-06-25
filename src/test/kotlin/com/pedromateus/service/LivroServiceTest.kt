@@ -1,8 +1,8 @@
 package com.pedromateus.service
 
-import com.pedromateus.livro.repository.LivroRepository
-import com.pedromateus.livro.service.LivroServiceimpl
-import com.pedromateus.livro.subscriber.model.LivroRequestDTO
+import com.pedromateus.livro.core.ports.LivroRepository
+import com.pedromateus.livro.core.service.LivroServiceimpl
+import com.pedromateus.livro.infrastructure.model.LivroRequestDTO
 import io.kotest.core.spec.style.AnnotationSpec
 import io.micronaut.test.extensions.kotest.annotation.MicronautTest
 import io.mockk.every
@@ -14,7 +14,7 @@ import java.util.*
 class LivroServiceTest: AnnotationSpec() {
 
     val repository= mockk<LivroRepository>()
-    val service=LivroServiceimpl(repository)
+    val service= LivroServiceimpl(repository)
 
     @Test
     fun `deve salvar um livro no banco de dados`(){

@@ -1,7 +1,7 @@
-package com.pedromateus.livro.subscriber
+package com.pedromateus.livro.infrastructure.subscriber
 
-import com.pedromateus.livro.service.LivroService
-import com.pedromateus.livro.subscriber.model.EventsInformation
+import com.pedromateus.livro.core.ports.LivroService
+import com.pedromateus.livro.infrastructure.model.EventsInformation
 import io.micronaut.http.annotation.Body
 import io.micronaut.nats.annotation.NatsListener
 import io.micronaut.nats.annotation.Subject

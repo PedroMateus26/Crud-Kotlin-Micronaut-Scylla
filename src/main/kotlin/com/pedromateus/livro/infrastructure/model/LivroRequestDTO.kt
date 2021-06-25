@@ -1,4 +1,4 @@
-package com.pedromateus.livro.subscriber.model
+package com.pedromateus.livro.infrastructure.model
 
 import io.micronaut.core.annotation.Introspected
 

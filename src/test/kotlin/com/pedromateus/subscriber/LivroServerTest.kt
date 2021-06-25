@@ -1,7 +1,10 @@
 package com.pedromateus.subscriber
-import com.pedromateus.livro.service.LivroServiceimpl
-import com.pedromateus.livro.subscriber.LivroServer
-import com.pedromateus.livro.subscriber.model.*
+import com.pedromateus.livro.core.service.LivroServiceimpl
+import com.pedromateus.livro.infrastructure.model.Events
+import com.pedromateus.livro.infrastructure.model.EventsInformation
+import com.pedromateus.livro.infrastructure.model.LivroEvent
+import com.pedromateus.livro.infrastructure.model.LivroRequestDTO
+import com.pedromateus.livro.infrastructure.subscriber.LivroServer
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.shouldBe
 import io.micronaut.test.extensions.kotest.annotation.MicronautTest
