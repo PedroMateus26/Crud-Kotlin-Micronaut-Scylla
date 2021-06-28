@@ -2,11 +2,15 @@ package com.pedromateus.livro.database.repository
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.Row
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder.*
+import com.datastax.oss.driver.api.querybuilder.QueryBuilder.insertInto
+import com.datastax.oss.driver.api.querybuilder.QueryBuilder.literal
+import com.datastax.oss.driver.api.querybuilder.QueryBuilder.update
+import com.datastax.oss.driver.api.querybuilder.QueryBuilder.deleteFrom
+import com.datastax.oss.driver.api.querybuilder.QueryBuilder.selectFrom
 import com.pedromateus.livro.core.ports.LivroRepositoryPort
 import com.pedromateus.livro.database.entity.LivroEntity
 import org.slf4j.LoggerFactory
-import java.util.*
+import java.util.UUID
 import javax.inject.Singleton
 
 @Singleton

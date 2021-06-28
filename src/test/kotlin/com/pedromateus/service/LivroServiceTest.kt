@@ -1,9 +1,11 @@
 package com.pedromateus.service
 
+import com.pedromateus.livro.core.model.Livro
 import com.pedromateus.livro.core.ports.LivroRepositoryPort
 import com.pedromateus.livro.core.service.LivroServiceimplPort
-import com.pedromateus.livro.infrastructure.model.LivroRequestDTO
+import com.pedromateus.livro.database.entity.LivroEntity
 import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.matchers.shouldBe
 import io.micronaut.test.extensions.kotest.annotation.MicronautTest
 import io.mockk.every
 import io.mockk.mockk
@@ -16,30 +18,38 @@ class LivroServiceTest: AnnotationSpec() {
     val repository= mockk<LivroRepositoryPort>()
     val service= LivroServiceimplPort(repository)
 
+    lateinit var livroSalvar: Livro
+    lateinit var livroAtualizar: Livro
+    lateinit var livroDeletar: Livro
+
+    @BeforeEach
+    fun setUp(){
+        livroSalvar= Livro(null,titulo = "titulo",autor = "autor")
+        livroAtualizar= Livro(UUID.randomUUID(),titulo = "titulo",autor = "autor")
+        livroDeletar= Livro(UUID.randomUUID(),null,null)
+    }
+
     @Test
     fun `deve salvar um livro no banco de dados`(){
-        val request= LivroRequestDTO(titulo = "titulo",autor = "autor")
+        every { repository.salvaLivro(any()) } answers {}
+        val result = service.salvaLivro(livroSalvar)
 
-        every { repository.salvaLivro(any()) } answers {request}
-        service.salvaLivro(livroRequestDTO = request)
+        result shouldBe Unit
 
     }
 
     @Test
     fun `deve atualizar um livro no banco de dados`(){
-        val request= LivroRequestDTO(titulo = "titulo",autor = "autor")
 
-        every { repository.atualizaLivro(any(),any()) } answers {request}
-        service.atualizaLivro(livroRequestDTO = request,UUID.randomUUID())
+        every { repository.atualizaLivro(any()) } answers {Unit}
+        service.atualizaLivro(livroAtualizar)
 
     }
 
     @Test
     fun `deve deletar um livro no banco de dados`(){
-        val request= LivroRequestDTO(titulo = "titulo",autor = "autor")
-
-        every { repository.deletaLivro(any()) } answers {request}
-        service.deletaLivro(UUID.randomUUID())
+        every { repository.deletaLivro(any()) } answers {Unit}
+        service.deletaLivro(livroDeletar)
 
     }
 
