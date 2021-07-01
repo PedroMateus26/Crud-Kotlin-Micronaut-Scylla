@@ -14,7 +14,7 @@ import java.util.UUID
 import javax.inject.Singleton
 
 @Singleton
-class LivroRespositoryImplPort(private val cqlSession: CqlSession) : LivroRepositoryPort {
+class LivroRespositoryImpl(private val cqlSession: CqlSession) : LivroRepositoryPort {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -27,6 +27,7 @@ class LivroRespositoryImplPort(private val cqlSession: CqlSession) : LivroReposi
                 .build()
         )
         logger.info("livro salvo")
+
     }
 
     override fun atualizaLivro(livroEntity: LivroEntity) {
