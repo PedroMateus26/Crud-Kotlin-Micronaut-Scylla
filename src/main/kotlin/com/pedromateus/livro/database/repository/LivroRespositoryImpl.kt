@@ -1,16 +1,11 @@
 package com.pedromateus.livro.database.repository
 
 import com.datastax.oss.driver.api.core.CqlSession
-import com.datastax.oss.driver.api.core.cql.Row
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder.insertInto
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder.literal
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder.update
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder.deleteFrom
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder.selectFrom
+import com.datastax.oss.driver.api.querybuilder.QueryBuilder.*
 import com.pedromateus.livro.core.ports.LivroRepositoryPort
 import com.pedromateus.livro.database.entity.LivroEntity
 import org.slf4j.LoggerFactory
-import java.util.UUID
+import java.util.*
 import javax.inject.Singleton
 
 @Singleton
@@ -31,19 +26,22 @@ class LivroRespositoryImpl(private val cqlSession: CqlSession) : LivroRepository
     }
 
     override fun atualizaLivro(livroEntity: LivroEntity) {
-        val value = findById(livroEntity.id)
-        if (value != null) {
-            cqlSession.execute(update("prateleira")
+
+        cqlSession.execute(
+            update("prateleira")
                 .setColumn("titulo", literal(livroEntity.titulo))
                 .setColumn("autor", literal(livroEntity.autor))
                 .whereColumn("id")
                 .isEqualTo(literal(livroEntity.id))
-                .build())
-        }
+                .ifExists()
+                .build()
+        )
+        logger.info("livro atualizado")
     }
 
-    override fun deletaLivro(livroEntity:LivroEntity) {
-        val teste = findById(livroEntity.id)
+
+    override fun deletaLivro(livroEntity: LivroEntity) {
+
         cqlSession.execute(
             deleteFrom("prateleira")
                 .whereColumn("id")
@@ -51,23 +49,9 @@ class LivroRespositoryImpl(private val cqlSession: CqlSession) : LivroRepository
                 .ifExists()
                 .build()
         )
+
         logger.info("livro deletado")
     }
-
-    private fun findById(id:UUID?) = converteRowParaLivroEvent(
-        cqlSession.execute(
-            selectFrom("prateleira")
-                .all()
-                .whereColumn("id")
-                .isEqualTo(literal(id))
-                .build()
-        ).one()!!
-    )
-
-    private fun converteRowParaLivroEvent(row:Row)= LivroEntity(
-        id=row.getUuid("id"),
-        titulo = row.getString("titulo"),autor = row.getString("autor")
-    )
 
 
 }
