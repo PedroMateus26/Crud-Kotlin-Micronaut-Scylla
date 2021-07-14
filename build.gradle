@@ -33,9 +33,24 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    //QueryBuilder
     implementation group: 'com.datastax.oss', name: 'java-driver-core', version: '4.12.0'
-    implementation("io.micronaut.cassandra:micronaut-cassandra:4.0.0")
+
+    //Cassandra
+//    implementation("io.micronaut.cassandra:micronaut-cassandra:4.0.0")
+
+    //JpaHibernate
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("javax.annotation:javax.annotation-api")
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa:2.4.7")
+    implementation 'org.hibernate:hibernate-core:5.4.19.Final'
+    implementation 'org.postgresql:postgresql:42.2.9'
+
+
     implementation("io.micronaut:micronaut-management")
+
+    //Nats
     implementation("io.micronaut.nats:micronaut-nats")
 
 }

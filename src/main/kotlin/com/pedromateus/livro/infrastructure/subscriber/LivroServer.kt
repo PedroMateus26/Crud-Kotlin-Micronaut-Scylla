@@ -17,6 +17,7 @@ class LivroServer(
 
     @Subject("livro.estoque.reposicao")
     fun salvaLivro(@Body eventsInformation: EventsInformation) {
+        logger.info("Recebendo mensagem do nats")
         val livro=LivroConverter.converteLivroEventParaLivro(eventsInformation.livroEvent)
         when (eventsInformation.event.name) {
             "SAVE" -> livroServicePort.salvaLivro(livro)

@@ -2,16 +2,27 @@ micronaut:
   application:
     name: cadastroLivro
   server:
-    port: 8080
+    port: 8082
 
-cassandra:
+#cassandra:
+#  default:
+#    basic:
+#      contact-points:
+#        - "127.0.0.1:9042"
+#      session-keyspace: estoque
+#      load-balancing-policy:
+#        local-datacenter: datacenter1
+
+datasources:
   default:
-    basic:
-      contact-points:
-        - "127.0.0.1:9042"
-      session-keyspace: estoque
-      load-balancing-policy:
-        local-datacenter: datacenter1
+    url: ${DB_URL:`jdbc:postgresql://localhost:26257/estoque`}
+    driverClassName: org.postgresql.Driver
+    username: ${POSTGRES_USER:root}
+    password: ${POSTGRES_PASSWORD:root}
+    dialect: POSTGRES
+jpa.default.properties.hibernate.hbm2ddl.auto: update
+jpa.default.properties.hibernate.show_sql: false
+jpa.default.properties.hibernate.format_sql: false
 
 endpoints:
   health:

@@ -1,56 +1,41 @@
 package com.pedromateus.livro.database.repository
 
-import com.datastax.oss.driver.api.core.CqlSession
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder.*
 import com.pedromateus.livro.core.ports.LivroRepositoryPort
 import com.pedromateus.livro.database.entity.LivroEntity
 import org.slf4j.LoggerFactory
-import java.util.*
 import javax.inject.Singleton
+import javax.persistence.EntityNotFoundException
 
 @Singleton
-class LivroRespositoryImpl(private val cqlSession: CqlSession) : LivroRepositoryPort {
+class LivroRespositoryImpl(private val repository: LivroRepository) : LivroRepositoryPort {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     override fun salvaLivro(livroEntity: LivroEntity) {
-        cqlSession.execute(
-            insertInto("prateleira")
-                .value("id", literal(UUID.randomUUID()))
-                .value("titulo", literal(livroEntity.titulo))
-                .value("autor", literal(livroEntity.autor))
-                .build()
-        )
-        logger.info("livro salvo")
-
+        logger.info("Salvando Livro")
+        repository.save(livroEntity)
+        logger.info("Livro Salvo")
     }
 
     override fun atualizaLivro(livroEntity: LivroEntity) {
-
-        cqlSession.execute(
-            update("prateleira")
-                .setColumn("titulo", literal(livroEntity.titulo))
-                .setColumn("autor", literal(livroEntity.autor))
-                .whereColumn("id")
-                .isEqualTo(literal(livroEntity.id))
-                .ifExists()
-                .build()
-        )
-        logger.info("livro atualizado")
+        logger.info("Atualizando Livro")
+        repository.findById(livroEntity.id).orElseThrow {
+            logger.info("Id ${livroEntity.id} não encontrado")
+            throw EntityNotFoundException("Entidade não encontrada.")
+        }
+        repository.update(livroEntity)
+        logger.info("Livro Atualizado")
     }
 
 
     override fun deletaLivro(livroEntity: LivroEntity) {
-
-        cqlSession.execute(
-            deleteFrom("prateleira")
-                .whereColumn("id")
-                .isEqualTo(literal(livroEntity.id))
-                .ifExists()
-                .build()
-        )
-
-        logger.info("livro deletado")
+        logger.info("Deletando Livro")
+        val livroDelete=repository.findById(livroEntity.id).orElseThrow {
+            logger.info("Id ${livroEntity.id} não encontrado")
+            throw EntityNotFoundException("Entidade não encontrada.")
+        }
+        repository.delete(livroDelete)
+        logger.info("Livro Deletado")
     }
 
 
