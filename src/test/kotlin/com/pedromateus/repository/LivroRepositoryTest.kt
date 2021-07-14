@@ -22,7 +22,8 @@ class LivroRepositoryTest:AnnotationSpec() {
     lateinit var livroEntitySalvar:LivroEntity
     lateinit var livroEntityAtualizar:LivroEntity
     lateinit var livroEntityDeletar:LivroEntity
-    lateinit var row: Row
+    lateinit var resultSet: ResultSet
+
 
     @BeforeEach
     fun setUp() {
@@ -34,49 +35,21 @@ class LivroRepositoryTest:AnnotationSpec() {
 
     @Test
     fun `deve salvar na base de dados`(){
-         every { cqlSession.execute(
-             QueryBuilder.insertInto("prateleira")
-                 .value("id", QueryBuilder.literal(UUID.randomUUID()))
-                 .value("titulo", QueryBuilder.literal(livroEntitySalvar.titulo))
-                 .value("autor", QueryBuilder.literal(livroEntitySalvar.autor))
-                 .build()
-         ).map { LivroEntity(
-             id=it.getUuid("id"),
-             titulo = it.getString("titulo"),autor = it.getString("autor")
-         ) }.one() }answers {livroEntitySalvar}
-
+         every { cqlSession.execute("") }answers {resultSet}
         val result  = livroRespositoryImpl.salvaLivro(livroEntitySalvar)
         result shouldBe Unit
     }
 
     @Test
     fun `deve atualizar na base de dados`(){
-
-        every { cqlSession.execute(
-            QueryBuilder.update("prateleira")
-            .setColumn("titulo", QueryBuilder.literal(livroEntityAtualizar.titulo))
-            .setColumn("autor", QueryBuilder.literal(livroEntityAtualizar.autor))
-            .whereColumn("id")
-            .isEqualTo(QueryBuilder.literal(livroEntityAtualizar.id))
-            .build()).map { LivroEntity(
-            id=it.getUuid("id"),
-            titulo = it.getString("titulo"),autor = it.getString("autor")
-        ) }.firstOrNull() }answers {livroEntityAtualizar}
-
+        every { cqlSession.execute("") }answers {resultSet}
         val result  = livroRespositoryImpl.atualizaLivro(livroEntityAtualizar)
         result shouldBe Unit
     }
 
     @Test
     fun `deve deletar na base de dados`(){
-
-         cqlSession.execute(
-            QueryBuilder.deleteFrom("prateleira")
-                .whereColumn("id")
-                .isEqualTo(QueryBuilder.literal(livroEntityDeletar.id))
-                .ifExists()
-                .build()
-        )
+        every { cqlSession.execute("") }answers {resultSet}
         val result  = livroRespositoryImpl.deletaLivro(livroEntityDeletar)
         result shouldBe Unit
     }
